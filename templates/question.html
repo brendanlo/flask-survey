@@ -8,17 +8,17 @@
 
     {% for choice in choices %}
     <p>
-        {% if show_text %}
-        <input type="text" name="answer" value="">
-
-        {% else %}
         <input type="radio" name="answer" value="{{choice}}">
-        {% endif %}
-
         {{ choice }}
-        <input type="hidden" name="question_num" value="{{question_num}}">
     </p>
     {% endfor %}
+
+    {% if allow_text %}
+    <input type="text" name="text_answer">
+    {% endif %}
+
+    <input type="hidden" name="question_num" value="{{question_num}}">
+
     <button>Continue</button>
 </form>
 
