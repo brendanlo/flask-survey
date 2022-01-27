@@ -18,3 +18,16 @@ def survey_start():
   return render_template("survey_start.html", title = survey_title, 
   instructions = survey_instructions)
 
+@app.post('/begin')
+def redirect_to_questions():
+    return redirect("/questions/0")
+
+@app.get('/questions/<question_num>')
+def get_question(question_num):
+    question_instance = survey.questions[int(question_num)] #TODO: why doesnt int typecast work in decorator
+    question = question_instance.question
+    choices = question_instance.choices
+    allow_text = question_instance.allow_text
+    return render_template("question.html", question=question, choices=choices, allow_text=allow_text)
+
+
