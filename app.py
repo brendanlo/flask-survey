@@ -28,6 +28,21 @@ def get_question(question_num):
     question = question_instance.question
     choices = question_instance.choices
     allow_text = question_instance.allow_text
-    return render_template("question.html", question=question, choices=choices, allow_text=allow_text)
+    return render_template("question.html", question=question, choices=choices, 
+    allow_text=allow_text, question_num = question_num)
+
+@app.post('/answer')
+def add_response_and_redirect():
+  responses.append(request.form['answer'])
+
+  question_num = int(request.form['question_num'])+1
+
+  if question_num == len(survey.questions) -1:
+    return redirect('/completion')
+  else:
+    return redirect(f"questions/{str(question_num)}")
 
 
+@app.get('/completion')
+def thank_user():
+  return render_template("completion.html")

@@ -5,13 +5,20 @@
 
 <form action="/answer" method="POST">
 
+
     {% for choice in choices %}
     <p>
-        <input type="radio" name="answer" value="value-goes-here">
+        {% if show_text %}
+        <input type="text" name="answer" value="">
+
+        {% else %}
+        <input type="radio" name="answer" value="{{choice}}">
+        {% endif %}
+
         {{ choice }}
+        <input type="hidden" name="question_num" value="{{question_num}}">
     </p>
     {% endfor %}
-    {{ show_text }}
     <button>Continue</button>
 </form>
 
