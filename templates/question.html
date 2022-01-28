@@ -1,6 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
 
+
+{% if get_flashed_messages() %}
+{% for msg in get_flashed_messages() %}
+{{msg}}
+{% endfor %}
+{% endif %}
+
 <h1>{{ question }}</h1>
 
 <form action="/answer" method="POST">

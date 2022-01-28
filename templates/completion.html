@@ -2,6 +2,12 @@
 
 {% block content %}
 
-  <h1>Thanks for completing this survey!</h1>
+{% if get_flashed_messages() %}
+{% for msg in get_flashed_messages() %}
+{{msg}}
+{% endfor %}
+{% endif %}
+
+<h1>Thanks for completing this survey!</h1>
 
 {% endblock %}
