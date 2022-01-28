@@ -16,6 +16,7 @@ def survey_start():
 
     # can we clarify why this needs to be inside a route rather than in the global scope? bc it needs to be part of a request?
     session['responses'] = []
+    session['current_question'] = 0
 
     survey_title = survey.title
     survey_instructions = survey.instructions
@@ -37,11 +38,16 @@ def redirect_to_questions():
 def get_question(question_num):
     """Render question page"""
 
+    if (session['current_question'] == len(survey.questions)):
+        return redirect('/completion')
+    elif (question_num != session['current_question']):
+        print("Redirecting to current page")
+        return redirect(f"/questions/{session['current_question']}")
+
     question_instance = survey.questions[question_num]
     question = question_instance.question
     choices = question_instance.choices
     allow_text = question_instance.allow_text
-    print(f"allow text {allow_text}")
 
     return render_template(
         "question.html",
@@ -58,6 +64,7 @@ def add_response_and_redirect():
     Else, increment question number and redirect next question page"""
 
     responses = session['responses']
+    session['current_question'] += 1
 
     if request.form.get('text_answer'):
         responses.append(
@@ -67,12 +74,12 @@ def add_response_and_redirect():
 
     session['responses'] = responses
 
-    question_num = int(request.form['question_num']) + 1
+    # question_num = int(request.form['question_num']) + 1
 
-    if question_num == len(survey.questions):
+    if (session['current_question'] == len(survey.questions)):
         return redirect('/completion')
     else:
-        return redirect(f"questions/{question_num}")
+        return redirect(f"questions/{session['current_question']}")
 
 
 @app.get('/completion')
